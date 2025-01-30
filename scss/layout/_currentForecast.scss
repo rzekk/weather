@@ -106,32 +106,34 @@
         }
 
         .humidity {
-            display: none;
+            @include flexCenter;
             grid-row: 6 / span 1;
-            grid-column: 1 / span 4;
+            grid-column: 1 / span 2;
             padding-top: 0.5rem;
             font-weight: normal;
             color: $fade-color;
             @include mqMaxWMinH(1024px, 650px) {
-                @include flexCenter;
+                grid-column: 1 / span 4;
             }
-            @include mqh(1080px) {
-                @include flexCenter;
+            @include mqh(1050px) {
+                grid-column: 1 / span 4;
             }
         }
 
         .wind {
-            display: none;
-            grid-row: 7 / span 1;
-            grid-column: 1 / span 4;
+            @include flexCenter;
+            grid-row: 6 / span 1;
+            grid-column: 3 / span 2;
             padding-top: 0.5rem;
             font-weight: normal;
             color: $fade-color;
             @include mqMaxWMinH(1024px, 650px) {
-                @include flexCenter;
+                grid-row: 7 / span 1;
+                grid-column: 1 / span 4;
             }
-            @include mqh(1080px) {
-                @include flexCenter;
+            @include mqh(1050px) {
+                grid-row: 7 / span 1;
+                grid-column: 1 / span 4;
             }
         }
     }

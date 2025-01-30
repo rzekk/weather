@@ -39,6 +39,7 @@ main {
     border: 1px solid $border-color;
     border-radius: 10px;
     box-shadow: 1px 1px 2.5px $shadow-color;
+    backdrop-filter: blur(10px);
 }
 
 img {
