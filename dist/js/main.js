@@ -145,6 +145,5 @@ const submitNewLocation = async (event) => {
 
 const updateDataAndDisplay = async (locationObj) => {
     const weatherJson = await getWeatherFromCoords(locationObj);
-    console.log(weatherJson);
     if (weatherJson) updateDisplay(weatherJson, locationObj);
 };
