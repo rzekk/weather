@@ -1,4 +1,4 @@
-import fetch from "node-fetch";
+import axios from 'axios';
 
 const { WEATHER_API_KEY } = process.env;
 
