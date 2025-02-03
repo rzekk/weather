@@ -64,7 +64,7 @@ export const getCoordsFromApi = async (entryText, units) => {
         units: units
     };
     try {
-        const dataStream = await fetch('rococo-cannoli-43ca7b.netlify.app/.netlify/functions/get_coords', {
+        const dataStream = await fetch('https://rococo-cannoli-43ca7b.netlify.app/.netlify/functions/get_coords', {
             method: 'POST',
             body: JSON.stringify(urlDataObj)
         });
