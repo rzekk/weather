@@ -32,8 +32,11 @@ export const getWeatherFromCoords = async (locationObj) => {
         units: locationObj.getUnit()
     };
     try {
-        const weatherStream = await fetch("./.netlify/functions/get_weather", {
+        const weatherStream = await fetch("rococo-cannoli-43ca7b.netlify.app/.netlify/functions/get_weather", {
             method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
             body: JSON.stringify(urlDataObj)
         });
         const weatherJson = await weatherStream.json();
@@ -61,7 +64,7 @@ export const getCoordsFromApi = async (entryText, units) => {
         units: units
     };
     try {
-        const dataStream = await fetch('./.netlify/functions/get_coords', {
+        const dataStream = await fetch('rococo-cannoli-43ca7b.netlify.app/.netlify/functions/get_coords', {
             method: 'POST',
             body: JSON.stringify(urlDataObj)
         });
