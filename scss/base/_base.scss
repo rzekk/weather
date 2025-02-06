@@ -40,6 +40,9 @@ main {
     border-radius: 10px;
     box-shadow: 1px 1px 2.5px $shadow-color;
     backdrop-filter: blur(10px);
+    @include mqMaxWMinH(1024px, 650px) {
+        backdrop-filter: blur(3px);
+    }
 }
 
 img {
