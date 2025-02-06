@@ -5,8 +5,8 @@
 }
 
 html {
-    background-color: $background-color;
-    background-image: url("../img/clouds.jpg");
+    background-image: linear-gradient($clouds-color-1, $clouds-color-2);
+    /* background-image: url("../img/clouds.jpg"); */
     background-size: cover;
     background-blend-mode: overlay;
     font-size: 16px;

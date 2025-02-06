@@ -1,3 +1,5 @@
+import { snowAnimation } from "./snowAnimation";
+
 export const setPlaceHolderText = () => {
     const input = document.getElementById("searchBar__text");
     window.innerWidth < 400
@@ -100,31 +102,52 @@ const getWeatherClass = (icon) => {
     const firstTwoChars = icon.slice(0, 2);
     const lastChar = icon.slice(2);
     const weatherLookup = {
-        '09': 'snow',
+        '01': 'clear',
+        '09': 'rain',
         '10': 'rain',
         '11': 'rain',
         '13': 'snow',
         '50': 'fog',
     };
     let weatherClass;
+    let weatherTime;
     if (weatherLookup[firstTwoChars]) {
         weatherClass = weatherLookup[firstTwoChars];
-    } else if (lastChar === 'd') {
-        weatherClass = 'clouds';
     } else {
-        weatherClass = 'night';
+        weatherClass = 'clouds';
+    }
+    if (lastChar === 'n') {
+        weatherTime = 'night';
+    } else {
+        weatherTime = 'day';
     }
 
-    return weatherClass;
+    return [weatherClass, weatherTime];
 };
 
-const setBGImage = (weatherClass) => {
-    document.documentElement.classList.add(weatherClass);
+const setBGImage = (conditions) => {
+    document.documentElement.classList.add(conditions[0]);
     document.documentElement.classList.forEach(img => {
-        if (img !== weatherClass) {
+        if (img !== conditions[0]) {
             document.documentElement.classList.remove(img);
         }
-    })
+    });
+    if (conditions[1] === 'night') {
+        document.documentElement.classList.add('night');
+        document.documentElement.classList.remove(conditions[0]);
+    }
+    if (conditions[0] === 'clear' && conditions[1] === 'day') {
+        // TODO: draw sun
+    } else if (conditions[0] === 'snow') {
+        snowAnimation();
+    } else if (conditions[0] === 'rain') {
+        // TODO: animate rain
+    } else if (conditions[0] === 'clear' && conditions[1] === 'night') {
+        // TODO: draw stars
+    } else if (conditions[0] === 'fog') {
+        // TODO: animate fog
+    }
+
 };
 
 const buildScreenReaderWeather = (weatherJson, locationObj) => {
