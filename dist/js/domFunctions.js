@@ -100,7 +100,6 @@ const deleteContents = (element) => {
 };
 
 const getWeatherClass = (icon) => {
-    console.log(icon);
     const firstTwoChars = icon.slice(0, 2);
     const lastChar = icon.slice(2);
     const weatherLookup = {
@@ -123,8 +122,6 @@ const getWeatherClass = (icon) => {
     } else {
         weatherTime = 'day';
     }
-    console.log(weatherClass);
-
     return [weatherClass, weatherTime];
 };
 
