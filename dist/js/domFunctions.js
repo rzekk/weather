@@ -1,4 +1,4 @@
-import { snowAnimation } from "./snowAnimation";
+import { clearSnowflakes, snowAnimation, rainAnimation } from "./precipitationAnim.js";
 
 export const setPlaceHolderText = () => {
     const input = document.getElementById("searchBar__text");
@@ -59,6 +59,7 @@ export const updateScreenReaderConfirmation = (srMsg) => {
 
 export const updateDisplay = (weatherJson, locationObj) => {
     fadeDisplay();
+    bgReset();
     clearDisplay();
     const weatherClass = getWeatherClass(weatherJson.current.weather[0].icon);
     setBGImage(weatherClass);
@@ -99,6 +100,7 @@ const deleteContents = (element) => {
 };
 
 const getWeatherClass = (icon) => {
+    console.log(icon);
     const firstTwoChars = icon.slice(0, 2);
     const lastChar = icon.slice(2);
     const weatherLookup = {
@@ -121,11 +123,13 @@ const getWeatherClass = (icon) => {
     } else {
         weatherTime = 'day';
     }
+    console.log(weatherClass);
 
     return [weatherClass, weatherTime];
 };
 
 const setBGImage = (conditions) => {
+    bgReset();
     document.documentElement.classList.add(conditions[0]);
     document.documentElement.classList.forEach(img => {
         if (img !== conditions[0]) {
@@ -141,13 +145,17 @@ const setBGImage = (conditions) => {
     } else if (conditions[0] === 'snow') {
         snowAnimation();
     } else if (conditions[0] === 'rain') {
-        // TODO: animate rain
+        rainAnimation();
     } else if (conditions[0] === 'clear' && conditions[1] === 'night') {
         // TODO: draw stars
     } else if (conditions[0] === 'fog') {
         // TODO: animate fog
     }
 
+};
+
+const bgReset = () => {
+    clearSnowflakes();
 };
 
 const buildScreenReaderWeather = (weatherJson, locationObj) => {
