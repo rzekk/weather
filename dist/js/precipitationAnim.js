@@ -227,7 +227,7 @@ const dropsArrayPush = () => {
 };
 
 const starsArrayPush = () => {
-    for (let i = 0; i < NUMBER_OF_STARS; i++) {
+    for (let i = 0; i < NUMBER_OF_STARS * (canvas.width * canvas.height) / 1000000; i++) {
         stars.push(createStar());
     }
 }
