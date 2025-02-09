@@ -1,4 +1,4 @@
-import { clearSnowflakes, snowAnimation, rainAnimation } from "./precipitationAnim.js";
+import { clearSnowflakes, snowAnimation, rainAnimation, starAnimation, sunAnimation } from "./precipitationAnim.js";
 
 export const setPlaceHolderText = () => {
     const input = document.getElementById("searchBar__text");
@@ -71,7 +71,6 @@ export const updateDisplay = (weatherJson, locationObj) => {
     displayCurrentConditions(ccArray);
     // six day forecast
     displaySixDayForecast(weatherJson);
-    setFocusOnSearch();
     fadeDisplay();
 };
 
@@ -138,13 +137,13 @@ const setBGImage = (conditions) => {
         document.documentElement.classList.remove(conditions[0]);
     }
     if (conditions[0] === 'clear' && conditions[1] === 'day') {
-        // TODO: draw sun
+        sunAnimation();
     } else if (conditions[0] === 'snow') {
         snowAnimation();
     } else if (conditions[0] === 'rain') {
         rainAnimation();
     } else if (conditions[0] === 'clear' && conditions[1] === 'night') {
-        // TODO: draw stars
+        starAnimation();
     } else if (conditions[0] === 'fog') {
         // TODO: animate fog
     }
@@ -160,10 +159,6 @@ const buildScreenReaderWeather = (weatherJson, locationObj) => {
     const unit = locationObj.getUnit();
     const tempUnit = unit === 'metric' ? 'Celsius' : 'Fahrenheit';
     return `${weatherJson.current.weather[0].description} and ${Math.round(Number(weatherJson.current.temp))} degrees ${tempUnit} in ${location}`;
-};
-
-const setFocusOnSearch = () => {
-    document.getElementById('searchBar__text').focus();
 };
 
 const createCurrentConditionsDivs = (weatherJson, unit) => {

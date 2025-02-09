@@ -12,6 +12,21 @@ const DROP_SIZE = 15;
 const DROP_COLOR = '#cde4fd';
 const drops = [];
 
+// stars
+const NUMBER_OF_STARS = 300;
+const TWINKLE_SPEED = 0.01;
+const STAR_SIZE = 2;
+const STAR_COLOR = '#fff';
+const stars = [];
+
+// sun
+const SUN_SIZE = 50;
+const RAY_SIZE = 60;
+const SUN_COLOR ="rgb(255, 204, 51)";
+const RAY_ALPHA = 0.4;
+const SUN_TWINKLE_SPEED = 0.0025;
+let sun = null;
+
 const canvas = document.createElement('canvas');
 const body = document.querySelector('body');
 
@@ -42,6 +57,28 @@ const createDrop = () => {
     }
 }
 
+const createStar = () => {
+    return {
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: STAR_SIZE,
+        alpha: Math.random(),
+        speed: Math.random() * TWINKLE_SPEED,
+    }
+}
+
+const createSun = () => {
+    return {
+        x: Math.random() * canvas.width * 0.01 + canvas.width * 0.05,
+        y: Math.random() * canvas.height * 0.01 + canvas.height * 0.15,
+        size: SUN_SIZE,
+        color: SUN_COLOR,
+        raySize: RAY_SIZE,
+        rayAlpha: RAY_ALPHA,
+        speed: SUN_TWINKLE_SPEED,
+    }
+}
+
 const drawSnowflake = (snowflake) => {
     ctx.beginPath();
     ctx.arc(snowflake.x, snowflake.y, snowflake.radius, 0, Math.PI * 2);
@@ -56,6 +93,25 @@ const drawDrop = (drop) => {
     ctx.lineTo(drop.x + drop.sway, drop.y + drop.size);
     ctx.strokeStyle = drop.color;
     ctx.stroke();
+    ctx.closePath();
+}
+
+const drawStar = (star) => {
+    ctx.beginPath();
+    ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
+    ctx.fill();
+    ctx.closePath();
+}
+
+const drawSun = (sun) => {
+    ctx.beginPath();
+    ctx.arc(sun.x, sun.y, sun.size, 0, Math.PI * 2);
+    ctx.fillStyle = SUN_COLOR;
+    ctx.fill();
+    ctx.arc(sun.x, sun.y, sun.raySize, 0, Math.PI * 2);
+    ctx.fillStyle = `rgb(255, 204, 51, ${sun.rayAlpha})`;
+    ctx.fill();
     ctx.closePath();
 }
 
@@ -75,7 +131,21 @@ const updateDrop = drop => {
     }
 };
 
-const animate = () => {
+const updateStar = star => {
+    star.alpha += star.speed;
+    if (star.alpha > 0.6 || star.alpha < 0.3) {
+        star.speed *= -1;
+    }
+}
+
+const updateSun = sun => {
+    sun.rayAlpha += sun.speed;
+    if (sun.rayAlpha > 0.5 || sun.rayAlpha < 0.3) {
+        sun.speed *= -1;
+    }
+}
+
+const animateSnow = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     snowflakes.forEach(snowflake => {
@@ -84,7 +154,7 @@ const animate = () => {
     });
 
 
-    animationFrameId = requestAnimationFrame(animate);
+    animationFrameId = requestAnimationFrame(animateSnow);
 };
 
 const animateDrops = () => {
@@ -97,6 +167,26 @@ const animateDrops = () => {
 
     animationFrameId = requestAnimationFrame(animateDrops);
 };
+
+const animateStars = () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    stars.forEach(star => {
+        updateStar(star);
+        drawStar(star);
+    });
+
+    animationFrameId = requestAnimationFrame(animateStars);
+}
+
+const animateSun = () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    updateSun(sun);
+    drawSun(sun);
+
+    animationFrameId = requestAnimationFrame(animateSun);
+}
 
 const setUpCanvas = () => {
     canvas.style.position = 'absolute';
@@ -128,6 +218,12 @@ const dropsArrayPush = () => {
     }
 };
 
+const starsArrayPush = () => {
+    for (let i = 0; i < NUMBER_OF_STARS; i++) {
+        stars.push(createStar());
+    }
+}
+
 export const snowAnimation = () => {
     if (isAnimating) {
         cancelAnimationFrame(animationFrameId);
@@ -136,7 +232,7 @@ export const snowAnimation = () => {
     snowflakes.length = 0;
     setUpCanvas();
     snowflakesArrayPush();
-    animate();
+    animateSnow();
 };
 
 export const rainAnimation = () => {
@@ -148,6 +244,27 @@ export const rainAnimation = () => {
     setUpCanvas();
     dropsArrayPush();
     animateDrops();
+}
+
+export const starAnimation = () => {
+    if (isAnimating) {
+        cancelAnimationFrame(animationFrameId);
+    }
+    isAnimating = true;
+    stars.length = 0;
+    setUpCanvas();
+    starsArrayPush();
+    animateStars();
+}
+
+export const sunAnimation = () => {
+    if (isAnimating) {
+        cancelAnimationFrame(animationFrameId);
+    }
+    isAnimating = true;
+    setUpCanvas();
+    sun = createSun();
+    animateSun();
 }
 
 export const clearSnowflakes = () => {
