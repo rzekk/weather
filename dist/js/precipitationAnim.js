@@ -168,13 +168,17 @@ const animateDrops = () => {
     animationFrameId = requestAnimationFrame(animateDrops);
 };
 
-const animateStars = () => {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
+const renderStars = () => {
     stars.forEach(star => {
         updateStar(star);
         drawStar(star);
     });
+}
+
+const animateStars = () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    renderStars();
 
     animationFrameId = requestAnimationFrame(animateStars);
 }
@@ -200,6 +204,10 @@ const setUpCanvas = () => {
     window.addEventListener('resize', () => {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        stars.length = 0;
+        starsArrayPush();
+        renderStars();
     });
     window.addEventListener('scroll', () => {
         canvas.style.top = `${window.scroll.y}px`;
